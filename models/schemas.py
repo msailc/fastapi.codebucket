@@ -5,6 +5,51 @@ from datetime import datetime
 class UserBase(BaseModel):
     username: str
     email: str
+    avatar_url: Optional[str] = None
+    shortdesc: Optional[str] = None
+
+    class Config:
+        orm_mode = True
+
+class TeamBase(BaseModel):
+    name: str
+    idea_title: str
+    idea_shortdesc: str
+    idea_desc: str
+    progress: Optional[str]
+    needed_skills: str
+
+    class Config:
+        orm_mode = True
+
+class Users(BaseModel):
+    id: int
+    username: Optional[str]
+    title: Optional[str]
+
+    class Config:
+        orm_mode = True
+
+class Teams(BaseModel):
+    id: int
+    name: Optional[str]
+    idea_title: Optional[str]
+    idea_shortdesc: Optional[str]
+    role: Optional[str]
+
+    class Config:
+        orm_mode = True
+
+class TeamDisplay(BaseModel):
+    id: int
+    name: str
+    idea_title: str
+    idea_shortdesc: str
+    idea_desc: str
+    progress: Optional[str]
+    needed_skills: str
+    created_at: datetime
+    members: Optional[List[Users]]
 
     class Config:
         orm_mode = True
@@ -14,6 +59,9 @@ class UserDisplay(BaseModel):
     username: str
     email: str
     created_at: datetime
+    avatar_url: Optional[str]
+    shortdesc: Optional[str]
+    teams: Optional[List[Teams]]
 
     class Config:
         orm_mode = True
