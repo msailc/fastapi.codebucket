@@ -50,8 +50,6 @@ class TeamIdea(Base):
 
     members = relationship("TeamMember", back_populates="rel_team")
 
-
-
 class Skill(Base):
     __tablename__ = 'skills'
 

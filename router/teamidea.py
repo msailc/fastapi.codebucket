@@ -29,7 +29,7 @@ def get_all_teams(db: Session = Depends(get_db)):
             progress=team.progress,
             needed_skills=team.needed_skills,
             created_at=team.created_at,
-            team_members=[
+            members=[
                 Users(
                     id = member.rel_user.id,
                     username = member.rel_user.username,

@@ -31,6 +31,7 @@ def get_all_users(db: Session = Depends(get_db)):
             teams=[
                 Teams(
                     id = team.rel_team.id,
+                    name = team.rel_team.name,
                     idea_title = team.rel_team.idea_title,
                     idea_shortdesc = team.rel_team.idea_shortdesc,
                     role = team.role,
