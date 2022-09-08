@@ -89,10 +89,18 @@ def get_team(team_id: int, db: Session = Depends(get_db)):
 
 @router.post("/", response_model=TeamDisplay)
 def create_team(team: TeamBase, db: Session = Depends(get_db)):
-    new_team = models.TeamIdea(name=team.name, idea_title=team.idea_title, idea_shortdesc=team.idea_shortdesc, idea_desc=team.idea_desc, progress=team.progress, needed_skills=team.needed_skills)
+    new_team = models.TeamIdea(name=team.name, idea_title=team.idea_title, idea_shortdesc=team.idea_shortdesc, idea_desc=team.idea_desc, progress=team.progress)
     db.add(new_team)
     db.commit()
     db.refresh(new_team)
     return new_team
 
 
+@router.delete("/{team_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_team(team_id: int, db: Session = Depends(get_db)):
+    result = db.query(TeamIdea).get(team_id)
+    if not result:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Team with id {team_id} not found")
+    db.delete(result)
+    db.commit()
+    return "ok"

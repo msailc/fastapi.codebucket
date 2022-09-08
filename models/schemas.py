@@ -17,7 +17,6 @@ class TeamBase(BaseModel):
     idea_shortdesc: str
     idea_desc: str
     progress: Optional[str]
-    needed_skills: str
 
     class Config:
         orm_mode = True
