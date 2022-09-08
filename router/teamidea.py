@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session, joinedload
 from database.session import get_db
 from models import models, schemas
 from typing import List, Union
-from models.schemas import TeamBase, TeamDisplay, Users
+from models.schemas import TeamBase, TeamDisplay, Users, TeamNeeds
 from models.models import TeamIdea, User
 
 router = APIRouter(
@@ -27,7 +27,6 @@ def get_all_teams(db: Session = Depends(get_db)):
             idea_shortdesc=team.idea_shortdesc,
             idea_desc=team.idea_desc,
             progress=team.progress,
-            needed_skills=team.needed_skills,
             created_at=team.created_at,
             members=[
                 Users(
@@ -36,7 +35,14 @@ def get_all_teams(db: Session = Depends(get_db)):
                     title = member.role,
                 )
                 for member in team.members
-            ]
+            ],
+            team_needs=[
+                TeamNeeds(
+                    id = need.id,
+                    need = need.need,
+                )
+                for need in team.team_needs
+            ],
         )
         for team in result
     ]
@@ -60,6 +66,14 @@ def get_team(team_id: int, db: Session = Depends(get_db)):
         for user in result.members
     ]
 
+    team_needs = [
+        TeamNeeds(
+            id = need.id,
+            need = need.need,
+        )
+        for need in result.team_needs
+    ]
+
     return TeamDisplay(
         id=result.id,
         name=result.name,
@@ -67,9 +81,9 @@ def get_team(team_id: int, db: Session = Depends(get_db)):
         idea_shortdesc=result.idea_shortdesc,
         idea_desc=result.idea_desc,
         progress=result.progress,
-        needed_skills=result.needed_skills,
         created_at=result.created_at,
         members=members,
+        team_needs=team_needs,
     )
 
 

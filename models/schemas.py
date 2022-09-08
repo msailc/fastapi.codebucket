@@ -22,6 +22,13 @@ class TeamBase(BaseModel):
     class Config:
         orm_mode = True
 
+class TeamNeeds(BaseModel):
+    id: int
+    need: str
+
+    class Config:
+        orm_mode = True
+        
 class Users(BaseModel):
     id: int
     username: Optional[str]
@@ -47,9 +54,9 @@ class TeamDisplay(BaseModel):
     idea_shortdesc: str
     idea_desc: str
     progress: Optional[str]
-    needed_skills: str
     created_at: datetime
     members: Optional[List[Users]]
+    team_needs: Optional[List[TeamNeeds]]
 
     class Config:
         orm_mode = True
@@ -62,6 +69,24 @@ class UserDisplay(BaseModel):
     avatar_url: Optional[str]
     shortdesc: Optional[str]
     teams: Optional[List[Teams]]
+
+    class Config:
+        orm_mode = True
+
+class TeamNeedDisplay(BaseModel):
+    id: int
+    team_id: int
+    team_name: str
+    team_idea_title: str
+    team_idea_shortdesc: str
+    need: str
+
+    class Config:
+        orm_mode = True
+
+class TeamNeedBase(BaseModel):
+    team_id: int
+    need: str
 
     class Config:
         orm_mode = True

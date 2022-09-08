@@ -44,11 +44,20 @@ class TeamIdea(Base):
     idea_shortdesc = Column(String)
     idea_desc = Column(String)
     progress = Column(String)
-    needed_skills = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
 
     members = relationship("TeamMember", back_populates="rel_team")
+    team_needs = relationship("TeamNeeds", back_populates="team_ideas")
+
+class TeamNeeds(Base):
+    __tablename__ = 'team_needs'
+
+    id = Column(Integer, primary_key=True, index=True)
+    team_id = Column(Integer, ForeignKey('team_ideas.id'))
+    need = Column(String)
+
+    team_ideas = relationship("TeamIdea", back_populates="team_needs")
 
 class Skill(Base):
     __tablename__ = 'skills'
