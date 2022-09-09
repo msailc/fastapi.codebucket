@@ -31,7 +31,6 @@ class TeamNeeds(BaseModel):
 class Users(BaseModel):
     id: int
     username: Optional[str]
-    title: Optional[str]
 
     class Config:
         orm_mode = True
@@ -79,6 +78,7 @@ class TeamNeedDisplay(BaseModel):
     team_idea_title: str
     team_idea_shortdesc: str
     need: str
+    team_assigned_member: Optional[List[Users]]
 
     class Config:
         orm_mode = True
@@ -86,6 +86,13 @@ class TeamNeedDisplay(BaseModel):
 class TeamNeedBase(BaseModel):
     team_id: int
     need: str
+
+    class Config:
+        orm_mode = True
+
+class AssignNeedToUser(BaseModel):
+    team_need_id: int
+    user_id: int
 
     class Config:
         orm_mode = True

@@ -34,6 +34,7 @@ class User(Base):
     updated_at = Column(DateTime, default=datetime.utcnow)
 
     teams = relationship("TeamMember", back_populates="rel_user")
+    assigned_needs = relationship("AssignedTeamNeeds", back_populates="rel_user")
 
 class TeamIdea(Base):
     __tablename__ = 'team_ideas'
@@ -58,6 +59,7 @@ class TeamNeeds(Base):
     need = Column(String)
 
     team_ideas = relationship("TeamIdea", back_populates="team_needs")
+    team_assigned_member = relationship("AssignedTeamNeeds", back_populates="rel_team_needs")
 
 class Skill(Base):
     __tablename__ = 'skills'
@@ -65,3 +67,16 @@ class Skill(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+class AssignedTeamNeeds(Base):
+    __tablename__ = 'assigned_team_needs'
+
+    id = Column(Integer, primary_key=True, index=True)
+    team_need_id = Column(Integer, ForeignKey('team_needs.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
+    assigned_at = Column(DateTime, default=datetime.utcnow)
+
+    rel_team_needs = relationship("TeamNeeds", back_populates="team_assigned_member")
+    rel_user = relationship("User", back_populates="assigned_needs")
+
+    
