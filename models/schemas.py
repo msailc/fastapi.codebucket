@@ -21,6 +21,14 @@ class TeamBase(BaseModel):
     class Config:
         orm_mode = True
 
+class Stacks(BaseModel):
+    id: int
+    name: str
+    level: Optional[int]
+
+    class Config:
+        orm_mode = True
+
 class TeamNeeds(BaseModel):
     id: int
     need: str
@@ -67,6 +75,7 @@ class UserDisplay(BaseModel):
     avatar_url: Optional[str]
     shortdesc: Optional[str]
     teams: Optional[List[Teams]]
+    stack: Optional[List[Stacks]]
 
     class Config:
         orm_mode = True
@@ -96,3 +105,20 @@ class AssignNeedToUser(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+
+class StackBase(BaseModel):
+    name: str
+
+    class Config:
+        orm_mode = True
+
+class StackDisplay(BaseModel):
+    id: int
+    name: str
+    users: Optional[List[Users]]
+
+    class Config:
+        orm_mode = True
+

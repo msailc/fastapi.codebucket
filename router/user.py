@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session, joinedload
 from database.session import get_db
 from models import models, schemas
 from typing import List, Union
-from models.schemas import TeamBase, TeamDisplay, UserDisplay, Teams
+from models.schemas import TeamBase, TeamDisplay, UserDisplay, Teams, Stacks
 from models.models import TeamIdea, User
 
 router = APIRouter(
@@ -48,6 +48,7 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
     result = (
         db.query(User)
         .options(joinedload("teams", "rel_team"))
+        .options(joinedload("stack", "rel_stack"))
         .get(user_id)
     )
 
@@ -61,6 +62,16 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
         )
         for team in result.teams
     ]
+
+    stack = [
+        Stacks(
+            id = stack.rel_stack.id,
+            name = stack.rel_stack.name,
+            level = stack.level,
+        )
+        for stack in result.stack
+    ]
+
     return UserDisplay(
         id=result.id,
         username=result.username,
@@ -68,7 +79,8 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
         created_at=result.created_at,
         avatar_url=result.avatar_url,
         shortdesc=result.shortdesc,
-        teams=teams
+        teams=teams,
+        stack=stack,
     )
 
 @router.post("/create", response_model=schemas.UserDisplay)

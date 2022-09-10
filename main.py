@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from database.config import settings
 from database.session import engine   #new
 from database.base_class import Base  #new
-from router import user,teamidea,teamneeds
+from router import user,teamidea,teamneeds,stack
 
 app = FastAPI()
 
@@ -26,3 +26,4 @@ app.add_middleware(
 app.include_router(user.router)
 app.include_router(teamidea.router)
 app.include_router(teamneeds.router)
+app.include_router(stack.router)
